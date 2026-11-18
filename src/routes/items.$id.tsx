@@ -94,7 +94,11 @@ function ItemPage() {
             {current.type === "video" ? (
               <video src={current.url} controls className="aspect-[4/3] w-full bg-ink object-contain" />
             ) : (
-              <img src={current.url} alt={listing.title} className="aspect-[4/3] w-full object-cover" />
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+                {/* Blurred copy fills the frame so the full photo can be shown uncropped. */}
+                <img src={current.url} alt="" aria-hidden="true" className="absolute inset-0 size-full scale-110 object-cover opacity-60 blur-2xl" />
+                <img src={current.url} alt={listing.title} className="relative size-full object-contain" />
+              </div>
             )}
             {me?.verified && !isOwner && saved.data && (
               <div className="absolute right-4 top-4">
