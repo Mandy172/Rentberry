@@ -88,9 +88,12 @@ export const verifyCode = createServerFn({ method: "POST" })
     const email = phoneLoginEmail(phone);
     const { data: member } = await supabaseAdmin
       .from("member_private")
-      .select("user_id, verified_at")
+      .select("user_id, verified_at, suspended_at")
       .eq("phone", phone)
       .maybeSingle();
+    if (member?.suspended_at) {
+      return { ok: false, error: "This account has been suspended. Contact support if you think this is a mistake." };
+    }
     if (!member) {
       const { error: createErr } = await supabaseAdmin.auth.admin.createUser({ email, email_confirm: true });
       if (createErr && !/already/i.test(createErr.message)) {
@@ -117,6 +120,12 @@ export const verifyCode = createServerFn({ method: "POST" })
     } else if (member.user_id !== userId) {
       console.error("[verifyCode] phone/user mismatch");
       return { ok: false, error: "We could not sign you in. Try again shortly." };
+    }
+
+    // Numbers on the admin list get the admin role on sign-in.
+    const { data: adminPhone } = await supabaseAdmin.from("admin_phones").select("phone").eq("phone", phone).maybeSingle();
+    if (adminPhone) {
+      await supabaseAdmin.from("user_roles").upsert({ user_id: userId, role: "admin" }, { onConflict: "user_id,role", ignoreDuplicates: true });
     }
 
     return { ok: true, tokenHash: link.properties.hashed_token, needsSelfie: !member?.verified_at };
@@ -175,7 +184,7 @@ export const submitSelfie = createServerFn({ method: "POST" })
 export const getMe = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<Me | null> => {
-    const [{ data: priv }, { data: profile }, { count }] = await Promise.all([
+    const [{ data: priv }, { data: profile }, { count }, { data: isAdmin }] = await Promise.all([
       context.supabase.from("member_private").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("profiles").select("display_name").eq("id", context.userId).maybeSingle(),
       context.supabase
@@ -183,8 +192,9 @@ export const getMe = createServerFn({ method: "GET" })
         .select("id", { count: "exact", head: true })
         .eq("user_id", context.userId)
         .eq("read", false),
+      context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" }),
     ]);
-    if (!priv) return null;
+    if (!priv || priv.suspended_at) return null;
     return {
       id: context.userId,
       name: profile?.display_name ?? "",
@@ -192,5 +202,6 @@ export const getMe = createServerFn({ method: "GET" })
       verified: !!priv.verified_at,
       stripeConnected: priv.stripe_connected,
       unread: count ?? 0,
+      isAdmin: !!isAdmin,
     };
   });

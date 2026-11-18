@@ -71,6 +71,7 @@ export type Me = {
   verified: boolean;
   stripeConnected: boolean;
   unread: number;
+  isAdmin: boolean;
 };
 
 export type ConversationSummary = {

@@ -31,7 +31,7 @@ export function SiteHeader() {
                 <Icon name="edit_note" />
                 Post Item
               </Link>
-              <UserMenu name={me.name} />
+              <UserMenu name={me.name} isAdmin={me.isAdmin} />
             </div>
           </>
         ) : (

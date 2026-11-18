@@ -15,6 +15,7 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BrowseRouteImport } from './routes/browse'
 import { Route as EarningsRouteImport } from './routes/earnings'
 import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedMyListingsRouteImport } from './routes/_authenticated/my-listings'
 import { Route as AuthenticatedMyRentalsRouteImport } from './routes/_authenticated/my-rentals'
@@ -52,6 +53,11 @@ const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
   id: '/messages',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/browse': typeof BrowseRoute
   '/earnings': typeof EarningsRoute
   '/sign-in': typeof SignInRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/my-listings': typeof AuthenticatedMyListingsRoute
   '/my-rentals': typeof AuthenticatedMyRentalsRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/browse': typeof BrowseRoute
   '/earnings': typeof EarningsRoute
   '/sign-in': typeof SignInRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/my-listings': typeof AuthenticatedMyListingsRoute
   '/my-rentals': typeof AuthenticatedMyRentalsRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/browse': typeof BrowseRoute
   '/earnings': typeof EarningsRoute
   '/sign-in': typeof SignInRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/my-listings': typeof AuthenticatedMyListingsRoute
   '/_authenticated/my-rentals': typeof AuthenticatedMyRentalsRoute
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/browse'
     | '/earnings'
     | '/sign-in'
+    | '/admin'
     | '/messages'
     | '/my-listings'
     | '/my-rentals'
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/browse'
     | '/earnings'
     | '/sign-in'
+    | '/admin'
     | '/messages'
     | '/my-listings'
     | '/my-rentals'
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
     | '/browse'
     | '/earnings'
     | '/sign-in'
+    | '/_authenticated/admin'
     | '/_authenticated/messages'
     | '/_authenticated/my-listings'
     | '/_authenticated/my-rentals'
@@ -246,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/messages': {
       id: '/_authenticated/messages'
       path: '/messages'
@@ -306,6 +325,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedMyListingsRoute: typeof AuthenticatedMyListingsRoute
   AuthenticatedMyRentalsRoute: typeof AuthenticatedMyRentalsRoute
@@ -315,6 +335,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedMyListingsRoute: AuthenticatedMyListingsRoute,
   AuthenticatedMyRentalsRoute: AuthenticatedMyRentalsRoute,

@@ -29,6 +29,13 @@
       "when": 1794985227860,
       "tag": "0003_restrict_profile_visibility",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794995526084,
+      "tag": "0004_admin_roles_and_suspension",
+      "breakpoints": true
     }
   ]
 }

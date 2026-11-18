@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_phones: {
+        Row: {
+          created_at: string
+          phone: string
+        }
+        Insert: {
+          created_at?: string
+          phone: string
+        }
+        Update: {
+          created_at?: string
+          phone?: string
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           created_at: string
@@ -203,6 +218,7 @@ export type Database = {
           selfie_hash: string | null
           stripe_account_id: string | null
           stripe_connected: boolean
+          suspended_at: string | null
           user_id: string
           verified_at: string | null
         }
@@ -212,6 +228,7 @@ export type Database = {
           selfie_hash?: string | null
           stripe_account_id?: string | null
           stripe_connected?: boolean
+          suspended_at?: string | null
           user_id: string
           verified_at?: string | null
         }
@@ -221,6 +238,7 @@ export type Database = {
           selfie_hash?: string | null
           stripe_account_id?: string | null
           stripe_connected?: boolean
+          suspended_at?: string | null
           user_id?: string
           verified_at?: string | null
         }
@@ -429,16 +447,44 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
       can_view_profile: { Args: { _profile_id: string }; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       is_verified: { Args: { _uid: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -565,6 +611,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin"],
+    },
   },
 } as const
