@@ -434,6 +434,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_view_profile: { Args: { _profile_id: string }; Returns: boolean }
       is_verified: { Args: { _uid: string }; Returns: boolean }
     }
     Enums: {
