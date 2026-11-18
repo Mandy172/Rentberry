@@ -3,6 +3,7 @@ import { CATEGORIES } from "@/lib/config";
 import { mainImage } from "@/lib/mappers";
 import { priceLabel } from "@/lib/pricing";
 import type { Listing } from "@/lib/types";
+import { FullPhoto } from "./full-photo";
 import { Icon } from "./icon";
 import { SaveButton } from "./save-button";
 
@@ -15,14 +16,13 @@ export function FeaturedListingCard({ listing }: { listing: Listing }) {
       params={{ id: listing.id }}
       className="group overflow-hidden rounded-2xl bg-card shadow-card transition hover:-translate-y-0.5 hover:shadow-lg"
     >
-      <div className="relative aspect-[16/9] overflow-hidden">
-        <img
-          src={mainImage(listing)}
-          alt={listing.title}
-          loading="lazy"
-          className="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105"
-        />
-      </div>
+      <FullPhoto
+        src={mainImage(listing)}
+        alt={listing.title}
+        loading="lazy"
+        className="aspect-[16/9]"
+        imgClassName="transition duration-500 group-hover:scale-105"
+      />
       <div className="space-y-3 p-5 md:p-6">
         <h3 className="truncate font-heading text-lg font-medium">{listing.title}</h3>
         <p className="text-xl font-semibold text-rust">{priceLabel(listing)}</p>
@@ -46,14 +46,13 @@ export function ListingCard({ listing, saved }: { listing: Listing; saved?: bool
   return (
     <article className="group relative overflow-hidden rounded-2xl bg-card shadow-card transition hover:shadow-lg">
       <Link to="/items/$id" params={{ id: listing.id }} className="block">
-        <div className="relative aspect-square overflow-hidden">
-          <img
-            src={mainImage(listing)}
-            alt={listing.title}
-            loading="lazy"
-            className="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105"
-          />
-        </div>
+        <FullPhoto
+          src={mainImage(listing)}
+          alt={listing.title}
+          loading="lazy"
+          className="aspect-square"
+          imgClassName="transition duration-500 group-hover:scale-105"
+        />
         <div className="space-y-1.5 p-4">
           <h3 className="truncate font-heading text-base font-medium">{listing.title}</h3>
           <p>{priceLabel(listing)}</p>

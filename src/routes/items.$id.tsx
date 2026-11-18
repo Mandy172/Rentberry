@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-ro
 import { useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
+import { FullPhoto } from "@/components/full-photo";
 import { Icon } from "@/components/icon";
 import { SaveButton } from "@/components/save-button";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -94,11 +95,7 @@ function ItemPage() {
             {current.type === "video" ? (
               <video src={current.url} controls className="aspect-[4/3] w-full bg-ink object-contain" />
             ) : (
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
-                {/* Blurred copy fills the frame so the full photo can be shown uncropped. */}
-                <img src={current.url} alt="" aria-hidden="true" className="absolute inset-0 size-full scale-110 object-cover opacity-60 blur-2xl" />
-                <img src={current.url} alt={listing.title} className="relative size-full object-contain" />
-              </div>
+              <FullPhoto src={current.url} alt={listing.title} className="aspect-[4/3] w-full" />
             )}
             {me?.verified && !isOwner && saved.data && (
               <div className="absolute right-4 top-4">
