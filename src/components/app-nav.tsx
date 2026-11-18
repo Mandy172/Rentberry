@@ -3,12 +3,12 @@ import { cn } from "@/lib/utils";
 import { Icon } from "./icon";
 
 export const APP_LINKS = [
-  { to: "/browse", label: "Browse", icon: "home" },
-  { to: "/saved", label: "Saved", icon: "favorite" },
-  { to: "/my-listings", label: "My Listings", icon: "view_list" },
-  { to: "/my-rentals", label: "My Rentals", icon: "real_estate_agent" },
-  { to: "/messages", label: "Messages", icon: "chat_bubble" },
-  { to: "/notifications", label: "Notifications", icon: "notifications" },
+  { to: "/browse", label: "Browse", short: "Browse", icon: "home" },
+  { to: "/saved", label: "Saved", short: "Saved", icon: "favorite" },
+  { to: "/my-listings", label: "My Listings", short: "Listings", icon: "view_list" },
+  { to: "/my-rentals", label: "My Rentals", short: "Rentals", icon: "real_estate_agent" },
+  { to: "/messages", label: "Messages", short: "Messages", icon: "chat_bubble" },
+  { to: "/notifications", label: "Notifications", short: "Alerts", icon: "notifications" },
 ] as const;
 
 export function AppNav({ unread }: { unread: number }) {
@@ -39,7 +39,15 @@ export function AppNav({ unread }: { unread: number }) {
           );
         })}
       </nav>
+    </>
+  );
+}
 
+/** Phone tab bar. Render outside the blurred header: a backdrop filter would pin it to the header. */
+export function MobileAppNav({ unread }: { unread: number }) {
+  const pathname = useLocation({ select: (l) => l.pathname });
+  return (
+    <>
       <nav
         aria-label="App"
         className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t bg-card pb-[env(safe-area-inset-bottom)] lg:hidden"
@@ -52,12 +60,12 @@ export function AppNav({ unread }: { unread: number }) {
               to={l.to}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative flex flex-col items-center gap-0.5 py-2 text-[11px] text-muted-foreground",
+                "relative flex min-w-0 flex-col items-center gap-0.5 px-0.5 py-2 text-[11px] text-muted-foreground",
                 active && "font-semibold text-foreground",
               )}
             >
               <Icon name={l.icon} filled={active} className={cn(active && "text-ink")} />
-              <span className="truncate">{l.label.replace("My ", "")}</span>
+              <span className="max-w-full truncate">{l.short}</span>
               {l.to === "/notifications" && unread > 0 && (
                 <span className="absolute right-3 top-1.5 size-2 rounded-full bg-rust" aria-label={`${unread} unread`} />
               )}

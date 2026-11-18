@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useMe, useSession } from "@/lib/session";
 import { buttonVariants } from "./ui/button";
-import { AppNav } from "./app-nav";
+import { cn } from "@/lib/utils";
+import { AppNav, MobileAppNav } from "./app-nav";
 import { Icon } from "./icon";
 import { Logo } from "./logo";
 import { UserMenu } from "./user-menu";
@@ -18,6 +19,7 @@ export function SiteHeader() {
   const verified = !!me?.verified;
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-ink/5 bg-card/95 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
         <Logo />
@@ -25,7 +27,7 @@ export function SiteHeader() {
           <>
             <AppNav unread={me.unread} />
             <div className="flex items-center gap-3">
-              <Link to="/post-item" className={buttonVariants({ className: "hidden h-12 sm:flex" })}>
+              <Link to="/post-item" className={cn(buttonVariants(), "hidden h-12 sm:inline-flex")}>
                 <Icon name="edit_note" />
                 Post Item
               </Link>
@@ -54,5 +56,7 @@ export function SiteHeader() {
         )}
       </div>
     </header>
+    {verified && me && <MobileAppNav unread={me.unread} />}
+    </>
   );
 }

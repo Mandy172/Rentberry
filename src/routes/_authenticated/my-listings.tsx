@@ -57,7 +57,7 @@ function MyListingsPage() {
             </p>
           </div>
           {!me?.stripeConnected && (
-            <Button variant="ink" onClick={onConnect} disabled={connecting}>{connecting ? "Opening Stripe…" : "Connect Stripe"}</Button>
+            <Button variant="ink" className="w-full sm:w-auto" onClick={onConnect} disabled={connecting}>{connecting ? "Opening Stripe…" : "Connect Stripe"}</Button>
           )}
         </div>
 

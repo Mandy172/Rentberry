@@ -88,8 +88,8 @@ function ItemPage() {
 
   return (
     <section className="px-4 py-10 md:py-14">
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.2fr_1fr]">
-        <div>
+      <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-x-10">
+        <div className="lg:col-start-1 lg:self-start">
           <div className="relative overflow-hidden rounded-3xl bg-card shadow-card">
             {current.type === "video" ? (
               <video src={current.url} controls className="aspect-[4/3] w-full bg-ink object-contain" />
@@ -121,8 +121,9 @@ function ItemPage() {
               ))}
             </div>
           )}
+        </div>
 
-          <div className="mt-8 space-y-6 rounded-2xl bg-card p-6 shadow-sm md:p-8">
+        <div className="order-last space-y-6 rounded-2xl bg-card p-6 shadow-sm md:p-8 lg:order-none lg:col-start-1 lg:self-start">
             <div>
               <h2 className="text-xl font-semibold">About this item</h2>
               <p className="mt-3 whitespace-pre-line leading-relaxed text-muted-foreground">{listing.description}</p>
@@ -145,10 +146,9 @@ function ItemPage() {
                 <p className="mt-1 text-sm">{agreement.summary}</p>
               </div>
             )}
-          </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div>
             <p className="flex flex-wrap items-center gap-2 text-sm">
               <span className="rounded-full bg-honey-soft px-3 py-1">{category?.label ?? listing.category}</span>
