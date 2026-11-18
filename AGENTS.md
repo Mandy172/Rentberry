@@ -38,3 +38,5 @@ use the editor.
 - Listing media lives in the private `listing-media` bucket and is served by `/api/public/media/*` (workspace blocks public buckets). Media URLs are validated against the owner's folder.
 - Member-only screens live under `src/routes/_authenticated/` (`ssr: false`, requires a verified member). Why: sessions are browser-held.
 - The offline service worker registers only on the published site (never preview/iframe/dev).
+- Admin access needs the `admin` row in `public.user_roles` (granted at sign-in for numbers in server-only `public.admin_phones`) plus the `ADMIN_PASSCODE` secret on every admin server function (`src/lib/admin.functions.ts` → `src/server/admin.server.ts`). Why: the demo SMS code would otherwise let anyone who knows the admin number in.
+- Suspension sets `member_private.suspended_at`; `is_verified()`/`getVerifiedMember` treat suspended members as unverified and sign-in refuses them. Why: one flag blocks every member action and RLS write.

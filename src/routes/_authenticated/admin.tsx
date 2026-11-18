@@ -210,6 +210,11 @@ function ListingsTab({ pass, onLocked }: TabProps) {
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Listing | null>(null);
   const q = useQuery({ queryKey: ["admin", "listings"], queryFn: async () => unwrap(await adminListListings({ data: { passcode: pass } }), onLocked).listings, retry: false });
+  // Patch the cached list right away so the next edit starts from what's on screen.
+  const patch = (id: string, changes: Partial<Listing> | null) =>
+    queryClient.setQueryData<Listing[]>(["admin", "listings"], (list) =>
+      list && (changes === null ? list.filter((l) => l.id !== id) : list.map((l) => (l.id === id ? { ...l, ...changes } : l))),
+    );
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: ["admin"] });
     queryClient.invalidateQueries({ queryKey: ["listings"] });
@@ -224,6 +229,7 @@ function ListingsTab({ pass, onLocked }: TabProps) {
     const res = await adminUpdateListing({ data: { passcode: pass, id: l.id, changes: toEdit(l, { available: !l.available }) } });
     if (!res.ok) { toast.error(res.error); return; }
     toast.success(l.available ? "Listing hidden from browse." : "Listing is live again.");
+    patch(l.id, { available: !l.available });
     refresh();
   }
   async function remove(l: Listing) {
@@ -231,6 +237,7 @@ function ListingsTab({ pass, onLocked }: TabProps) {
     const res = await adminDeleteListing({ data: { passcode: pass, id: l.id } });
     if (!res.ok) { toast.error(res.error); return; }
     toast.success("Listing deleted.");
+    patch(l.id, null);
     refresh();
   }
 
@@ -272,6 +279,7 @@ function ListingsTab({ pass, onLocked }: TabProps) {
           const res = await adminUpdateListing({ data: { passcode: pass, id: editing.id, changes } });
           if (!res.ok) return res.error;
           toast.success("Listing saved.");
+          patch(editing.id, { ...changes, category: changes.category as Listing["category"] });
           setEditing(null);
           refresh();
           return null;
