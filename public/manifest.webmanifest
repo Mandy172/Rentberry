@@ -1,6 +1,6 @@
 {
-  "name": "BorrowBee — ADYPU campus rentals",
-  "short_name": "BorrowBee",
+  "name": "RentBerry — ADYPU campus rentals",
+  "short_name": "RentBerry",
   "description": "Borrow and lend within the Ajeenkya DY Patil University community.",
   "start_url": "/browse",
   "display": "standalone",

@@ -6,7 +6,7 @@ import { isAllowedMediaUrl, normalizePhone } from "./validation";
 
 const rates = { dailyRate: null, hourlyRate: null, flatRate: null, deposit: 0 };
 
-describe("BorrowBee business rules", () => {
+describe("RentBerry business rules", () => {
   it("charges a 12.5% platform fee", () => {
     expect(PLATFORM_FEE_RATE).toBe(0.125);
     expect(rentalQuote({ ...rates, dailyRate: 300 }, 1, 1)).toMatchObject({ subtotal: 300, fee: 37.5, ownerPayout: 262.5 });

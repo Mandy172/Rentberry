@@ -1,5 +1,5 @@
 // Minimal service worker: makes the app installable and serves an offline fallback for navigations.
-const CACHE = 'borrowbee-v1'
+const CACHE = 'rentberry-v1'
 const OFFLINE_URL = '/offline.html'
 
 self.addEventListener('install', (event) => {

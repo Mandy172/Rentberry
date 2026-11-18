@@ -5,7 +5,7 @@ import { FeaturedListings } from "@/components/home/featured-listings";
 import { Hero } from "@/components/home/hero";
 import { HowItWorks } from "@/components/home/how-it-works";
 import { TrustStrip } from "@/components/home/trust-strip";
-import { WhyBorrowBee } from "@/components/home/why-borrowbee";
+import { WhyRentBerry } from "@/components/home/why-rentberry";
 import { BRAND } from "@/lib/config";
 import { listingsQueryOptions } from "@/lib/queries";
 
@@ -31,7 +31,7 @@ function HomePage() {
       <Hero />
       <FeaturedListings listings={data} />
       <TrustStrip />
-      <WhyBorrowBee />
+      <WhyRentBerry />
       <HowItWorks />
       <EarningsSection />
     </>

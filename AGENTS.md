@@ -29,9 +29,9 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 
-## Project rules (BorrowBee)
+## Project rules (RentBerry)
 
-- Sign-in is phone OTP checked server-side (`src/lib/auth.functions.ts`), then a Cloud session is minted via an admin magic-link token for an internal `p<digits>@phone.borrowbee.local` address; public sign-up stays disabled. Why: keeps the original Twilio phone flow while using Cloud sessions and RLS.
+- Sign-in is phone OTP checked server-side (`src/lib/auth.functions.ts`), then a Cloud session is minted via an admin magic-link token for an internal `p<digits>@phone.borrowbee.local` address (legacy domain kept so existing sign-ins keep matching); public sign-up stays disabled. Why: keeps the original Twilio phone flow while using Cloud sessions and RLS.
 - SMS and Stripe fall back to demo mode (fixed code / instant "connected") when their secrets are absent. Why: mirrors the source app so the preview works without credentials.
 - `public.profiles` has no FK to `auth.users` so the seeded sample owners can exist; private member fields live in `member_private` (owner-read only, server-written). Why: names are public, phone/verification/Stripe data are not.
 - Cross-user writes (rentals, conversations, messages, notifications) go through server functions using the admin client after explicit participant checks; clients only read via RLS. Why: availability checks need to see other borrowers' rentals.

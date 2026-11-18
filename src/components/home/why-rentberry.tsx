@@ -8,7 +8,7 @@ const REASONS = [
   { icon: "eco", accent: "border-t-ink", title: "Buy less, share more", body: "Borrow the things you only need once a semester instead of buying them. Better for your wallet and the planet." },
 ];
 
-export function WhyBorrowBee() {
+export function WhyRentBerry() {
   return (
     <section className="bg-cream px-4 py-20 md:py-28">
       <div className="mx-auto max-w-7xl">

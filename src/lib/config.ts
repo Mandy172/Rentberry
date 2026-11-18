@@ -1,9 +1,9 @@
 export const BRAND = {
-  name: "BorrowBee",
+  name: "RentBerry",
   tagline: "Borrow what you need. Earn from what you own.",
   community: "Ajeenkya DY Patil University",
   communityShort: "ADYPU",
-  supportEmail: "support@borrowbee.app",
+  supportEmail: "support@rentberry.app",
 } as const;
 
 export const PLATFORM_FEE_RATE = 0.125;

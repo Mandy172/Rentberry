@@ -8,7 +8,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4 md:px-6">
         <div className="md:col-span-2">
           <div className="text-ink-foreground">
-            <Logo />
+            <Logo onDark />
           </div>
           <p className="mt-4 max-w-sm leading-relaxed">
             The rental marketplace for the {BRAND.community} community. Borrow from classmates, earn from what you own.
