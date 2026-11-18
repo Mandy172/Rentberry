@@ -1,23 +1,39 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { EarningsSection } from "@/components/home/earnings-section";
+import { FeaturedListings } from "@/components/home/featured-listings";
+import { Hero } from "@/components/home/hero";
+import { HowItWorks } from "@/components/home/how-it-works";
+import { TrustStrip } from "@/components/home/trust-strip";
+import { WhyBorrowBee } from "@/components/home/why-borrowbee";
+import { BRAND } from "@/lib/config";
+import { listingsQueryOptions } from "@/lib/queries";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const featured = listingsQueryOptions({ limit: 3 });
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: `${BRAND.name} | Campus rentals at ${BRAND.communityShort}` },
+      { name: "description", content: `Borrow what you need and earn from what you own. The rental marketplace for the ${BRAND.community} community.` },
+      { property: "og:title", content: `${BRAND.name} | Campus rentals at ${BRAND.communityShort}` },
+      { property: "og:description", content: `Borrow what you need and earn from what you own on ${BRAND.name}.` },
+    ],
+  }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(featured),
+  component: HomePage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function HomePage() {
+  const { data } = useSuspenseQuery(featured);
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <Hero />
+      <FeaturedListings listings={data} />
+      <TrustStrip />
+      <WhyBorrowBee />
+      <HowItWorks />
+      <EarningsSection />
+    </>
   );
 }

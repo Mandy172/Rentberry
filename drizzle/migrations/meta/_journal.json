@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794980290838,
+      "tag": "0000_borrowbee_core_schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794980322751,
+      "tag": "0001_listing_media_policies",
+      "breakpoints": true
+    }
+  ]
+}

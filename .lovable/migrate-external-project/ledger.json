@@ -1,0 +1,22 @@
+{
+  "source": "code-archive (Next.js 16 app 'BorrowBee')",
+  "capabilities": [
+    {"capability": "code: public pages (home, blog, earnings)", "source": "app/(main)/*, components/home/*", "outcome": "migrate", "status": "pending", "next_action": "Recreate as TanStack routes with the same design tokens"},
+    {"capability": "code: app screens (browse, item, sign-in, post-item, my-listings, my-rentals, messages, saved, notifications)", "source": "linked from nav; server actions in app/actions/* but page files absent from archive", "outcome": "rebuild from server actions (user asked whether a fuller export exists)", "status": "pending", "next_action": "Build screens from action logic; swap in originals if user uploads them"},
+    {"capability": "schema", "source": "lib/types.ts + lib/store.ts (in-memory Maps, no database)", "outcome": "migrate to Lovable Cloud tables", "status": "pending", "next_action": "Create tables with RLS"},
+    {"capability": "records", "source": "lib/mock-data.ts seeds (2 owners, 8 listings); runtime data lived in server memory and reset on restart", "outcome": "migrate seeds; no persisted records exist to export", "status": "pending", "next_action": "Insert seeds in migration"},
+    {"capability": "auth identities", "source": "phone OTP + cookie sessions held in memory", "outcome": "migrate to Lovable Cloud auth sessions; no persisted users exist", "status": "pending", "next_action": "Phone OTP verified server-side, then Cloud auth session minted"},
+    {"capability": "authorization", "source": "getVerifiedUser checks in server actions (owner/borrower/participant checks)", "outcome": "migrate to server functions + RLS", "status": "pending", "next_action": "Mirror every check"},
+    {"capability": "selfie verification", "source": "submitSelfie: stores SHA-256 hash only", "outcome": "migrate", "status": "pending", "next_action": "Camera capture + server hash"},
+    {"capability": "SMS (Twilio)", "source": "lib/sms.ts, TWILIO_* env; mock code 123456 when unset", "outcome": "preserve provider; mock mode kept when not connected", "status": "pending", "next_action": "User connects Twilio + sends from number at verification"},
+    {"capability": "Stripe Connect onboarding", "source": "lib/stripe.ts, STRIPE_SECRET_KEY; mock when unset", "outcome": "preserve source Stripe account", "status": "pending", "next_action": "User adds STRIPE_SECRET_KEY at verification"},
+    {"capability": "uploaded file bytes", "source": "Vercel Blob when BLOB_READ_WRITE_TOKEN set, otherwise server memory", "outcome": "Lovable Cloud storage (user asked; default)", "status": "pending", "next_action": "Bucket + storage policies"},
+    {"capability": "public endpoints", "source": "GET /api/files/[id] serves in-memory uploads", "outcome": "replaced by public storage URLs (no persisted files referenced it)", "status": "pending", "next_action": "none"},
+    {"capability": "analytics", "source": "@vercel/analytics (only runs on Vercel hosting)", "outcome": "replaced by Lovable built-in visitor analytics", "status": "pending", "next_action": "none"},
+    {"capability": "PWA (manifest, install prompt, offline fallback service worker)", "source": "app/manifest.ts, public/sw.js, components/install-prompt.tsx", "outcome": "migrate; service worker registers only on the published site", "status": "pending", "next_action": "Port manifest, icons, prompt"},
+    {"capability": "secrets", "source": "TWILIO_ACCOUNT_SID/AUTH_TOKEN/FROM_NUMBER, STRIPE_SECRET_KEY, BLOB_READ_WRITE_TOKEN, NEXT_PUBLIC_APP_URL", "outcome": "Twilio via connector + TWILIO_FROM_NUMBER secret; STRIPE_SECRET_KEY secret; Blob token not needed; app URL derived from request", "status": "pending", "next_action": "Request at verification"},
+    {"capability": "schedules/webhooks", "source": "none found", "outcome": "n/a", "status": "verified", "next_action": "none"},
+    {"capability": "cutover", "source": "Vercel deployment", "outcome": "publish on Lovable; update Stripe Connect return URL domain implicitly (derived from request)", "status": "pending", "next_action": "User publishes"},
+    {"capability": "verification", "source": "-", "outcome": "build, routes, sign-in -> verify -> list -> rent -> message flow", "status": "pending", "next_action": "Run checks"}
+  ]
+}
